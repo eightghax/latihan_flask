@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <title>Latihan Flask</title>
+    </head>
+    <body>
+        <h3>Contoh Penggunaan Flask, Ajax beserta Error Handling</h3>
+        <div>
+            Metode: <select id="opsi">
+                <option value="base64">Base64</option>
+                <option value="md5">MD5</option>
+                <option value="reverse">Reverse</option>
+            </select>
+            <button id="btnexec">Jalankan</button>
+        </div>
+        <br>
+        Status: <span id="status">Idle</span>
+        <br>
+        Metode: <span id="metode">-</span>
+        <br>
+        <textarea cols="30" rows="15" id="txtinput" placeholder="masukkan teks disini"></textarea>
+        <textarea cols="30" rows="15" id="txtoutput" placeholder="pilih metode dan klik tombol jalankan"></textarea>
+    </body>
+    <script src="{{url_for('static', filename='jquery.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#btnexec').click(function(){
+                var opsi = $('#opsi').val();
+                var txtinput = $('#txtinput').val();
+                $.ajax({
+					url: '/proses',
+					method: 'POST',
+					data: {metode: opsi, input: txtinput},
+					beforeSend: function() {
+						$('#status').text('sedang diproses..')
+					},
+					success: function(data) {
+						try {
+							var hasilproses = JSON.parse(data);
+                            var txtoutput = hasilproses.hasil;
+                            var metode = hasilproses.metode;
+							$('#txtoutput').val(txtoutput);
+                            $('#status').text('Proses selesai')
+							$('#metode').text(metode);
+						} catch(err) {
+							$('#status').text('Error mengolah hasil data');
+                            console.log(err);
+						}
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						$('#status').text('Terjadi kesalahan\n'+XMLHttpRequest.status+' - '+XMLHttpRequest.statusText);
+						console.log(XMLHttpRequest);
+					},
+					complete: function() {
+						//...
+					}
+				});
+                
+            });
+        });
+    </script>
+</html>
