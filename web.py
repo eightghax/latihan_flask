@@ -101,24 +101,12 @@ swagger_config = {
     "specs_route": "/docs"
 }
 
-swagger = Swagger(app, template=swagger_template, config=swagger_config)
-@swag_from("docs/user.yml", methods=['GET','POST'])
-@app.route('/api', methods=['GET'])
-def hello_world():
-    json_response = {
-        'status_code': 200,
-        'description': "Menyapa Hello World",
-        'data': "Hello World",
-    }
-
-    response_data = jsonify(json_response)
-    return response_data
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
+swagger = Swagger(app, template=swagger_template, config=swagger_config)
+@swag_from("docs/tugas.yml", methods=['POST'])
 @app.route('/proses',methods = ['POST'])
 def proses():
     metode = request.form['metode']

@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "My API"
+host: "api.example.com"
+basePath: "/v1"
+schemes:
+  - "https"
+paths:
+  /proses:
+    post:
+      summary: "API untuk memproses teks berdasarkan metode yang dipilih"
+      parameters:
+      - name: metode
+        in: formData
+        type: string
+        description: metode yang dipilih
+        required: true
+      - name: input
+        in: formData
+        type: string
+        description: teks input
+        required: true
+      responses:
+        200:
+          description: "metode yang dipilih dan hasil"
